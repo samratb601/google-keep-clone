@@ -3,7 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -11,110 +11,125 @@
 
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
- 
+
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
- 
+
     --primary: 225, 6%, 13%;
     --primary-foreground: 0 0% 98%;
- 
+
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
- 
+
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
- 
+
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
- 
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
- 
+
     --radius: 0.5rem;
   }
- 
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
- 
+
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
- 
+
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
- 
+
     --primary: 0 0% 98%;
     --primary-foreground: 240 5.9% 10%;
- 
+
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
- 
+
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
- 
+
     --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;
- 
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
- 
+
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     font-family: "Open Sans", sans-serif;
     @apply bg-background text-foreground;
   }
 }
+
 /* For Webkit based browsers */
 /* Track */
 ::-webkit-scrollbar {
-  width: 10px; /* Set the width of the scrollbar */
+  width: 10px;
+  /* Set the width of the scrollbar */
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #545454; /* Color of the scrollbar handle */
-  border-radius: 1px; /* Rounded corners for the handle */
+  background: #545454;
+  /* Color of the scrollbar handle */
+  border-radius: 1px;
+  /* Rounded corners for the handle */
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #747474; /* Color of the handle on hover */
+  background: #747474;
+  /* Color of the handle on hover */
 }
 
 /* Track on hover */
 ::-webkit-scrollbar-track:hover {
-  background: #00000000; /* Color of the track on hover */
+  background: #00000000;
+  /* Color of the track on hover */
 }
 
 /* Corner */
 ::-webkit-scrollbar-corner {
-  background: #ccc; /* Color of the scrollbar corner */
+  background: #ccc;
+  /* Color of the scrollbar corner */
 }
 
 
-.sidemenu{
+.sidemenu {
   /* width: 70px; */
   padding: 20px 0px;
-  /* background-color: aqua; */
+  /* transition: 0.3s; */
+  transition: all ease 0.4s;
+  /* transition-delay: 0.6s;
+  transition-duration: 0.5s; */
+  @apply bg-primary
 }
-.sidemenu:hover{
+
+.sidemenu:hover {
   width: 300px;
-  /* transition: all ease-in-out 0.1s; */
-  /* transition-delay: 0.1s; */
-  /* transition-duration: 0.1s; */
+  z-index: 1;
+}
+
+.sidebar-item {
+  transition: 0.12s ease;
 }
 
 .notes-grid {

@@ -18,6 +18,7 @@ const TakeNote = () => {
   const noteRef = useRef<any>();
 
   const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
 
   useOutsideClick(ref, () => {
@@ -38,12 +39,20 @@ const TakeNote = () => {
     } else if (!note && open) noteRef.current.focus();
   }, [note, open]);
 
+  const handleTitleChange = useCallback(
+    debounce((value: string) => {
+      setTitle(value);
+    }, 300),
+    []
+  );
+
   const handleNoteChange = useCallback(
     debounce((value: string) => {
       setNote(value);
     }, 300),
     []
   );
+
   const handleKeyUp = (e: KeyboardEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
     console.log(e.key, target.innerHTML);
@@ -63,9 +72,7 @@ const TakeNote = () => {
           className="w-full h-[45px] rounded-md pl-4 bg-transparent border-none placeholder:text-stone-300 focus:outline-none focus:border-none focus:ring-0
         focus-visible:ring-0 focus-visible:ring-offset-0 tracking-wide text-stone-300"
           placeholder="Title"
-          onClick={() => {
-            setOpen(true);
-          }}
+          onChange={handleTitleChange}
         />
       )}
 

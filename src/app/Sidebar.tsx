@@ -45,7 +45,7 @@ const Sidebar = () => {
   return (
     <div
     className={cn(
-      `absolute bg-primary h-full pt-2 flex flex-col justify-start group sidemenu`
+      `absolute bg-primary h-full flex flex-col justify-start group sidemenu`
     )}
     // onMouseEnter={() => {
     //   debounce(() => setSidemenuOpen(true), 170)();
@@ -60,7 +60,7 @@ const Sidebar = () => {
         <div
         key={`side-bar-item-${i+1}`}
           className={cn(
-            ` ${
+            `sidebar-item ${
               isActive
                 ? "px-3 flex place-content-center mx-auto bg-yellow-800/40 rounded-full w-12 h-12 group-hover:bg-yellow-800/40 group-hover:rounded-none group-hover:rounded-r-full group-hover:w-auto group-hover:h-auto  group-hover:place-content-start group-hover:mx-0"
                 : "px-3 hover:bg-gray-700/40 hover:rounded-r-full"
