@@ -37,31 +37,33 @@ export default function Home() {
                   900: 3,
                   1050: 4,
                   1300: 5,
+                  1500: 6,
+                  1800: 7,
                 }}
               >
                 <div className="w-full text-left text-white text-[0.7rem] tracking-widest pb-2">
                   {pinnedNotes.length > 0 ? "PINNED" : ""}
                 </div>
-                <AnimatePresence>
-                  <Masonry gutter="10px" className="">
-                    {pinnedNotes.map((note, i) => {
-                      return <Note i={i} key={`note-${i}`} note={note} />;
-                    })}
-                  </Masonry>
-                </AnimatePresence>
+                {/* <AnimatePresence> */}
+                <Masonry gutter="10px" className="">
+                  {pinnedNotes.map((note, i) => {
+                    return <Note i={i} key={`note-${i}`} note={note} />;
+                  })}
+                </Masonry>
+                {/* </AnimatePresence> */}
 
                 <div className="w-full text-left text-white text-[0.7rem] tracking-widest mt-10 pb-2">
                   {pinnedNotes.length > 0 ? "OTHERS" : ""}
                 </div>
-                <AnimatePresence>
-                  <Masonry gutter="10px" className="">
-                    {notes
-                      .filter((item) => !item.pinned)
-                      .map((note, i) => {
-                        return <Note i={i} key={`note-${i}`} note={note} />;
-                      })}
-                  </Masonry>
-                </AnimatePresence>
+                {/* <AnimatePresence> */}
+                <Masonry gutter="10px" className="">
+                  {notes
+                    .filter((item) => !item.pinned)
+                    .map((note, i) => {
+                      return <Note i={i} key={`note-${i}`} note={note} />;
+                    })}
+                </Masonry>
+                {/* </AnimatePresence> */}
               </ResponsiveMasonry>
             </div>
           </div>

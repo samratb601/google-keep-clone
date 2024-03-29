@@ -41,9 +41,9 @@ const Note = ({ i, note }: NoteProps) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: pinned ? 100 : 0 }}
+      initial={{ opacity: 0, y: pinned ? 0 : 0 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: pinned ? 0 : 0.5 }}
+      transition={{ duration: pinned ? 0.5 : 0.5 }}
       ref={noteRef}
       className={cn(
         "relative border border-zinc-600 rounded-md shadow-md p-3 text-slate-300 cursor-default group transition-all delay-300 duration-150",
