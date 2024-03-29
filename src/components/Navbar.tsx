@@ -1,5 +1,5 @@
 import React from "react";
-import { IconWrapper } from "@/components/ui/icon-wrapper";
+import { IconWrapper } from "@/components/IconWrapper";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useState } from "react";

@@ -1,4 +1,4 @@
-import { IconWrapper } from "@/components/ui/icon-wrapper";
+import { IconWrapper } from "@/components/IconWrapper";
 import { cn } from '@/lib/utils';
 import { FiEdit2 } from "react-icons/fi";
 import {
