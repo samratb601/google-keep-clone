@@ -16,12 +16,8 @@ type NotesContextType = {
   notes: NoteType[];
   setNotes: Dispatch<SetStateAction<NoteType[]>>;
   getNotes: (noteId?: string) => Promise<any>;
-  saveNote: (data: {
-    id?: string;
-    title: string;
-    content: string;
-    pinned?:boolean
-  }) => Promise<any>;
+  saveNote: (data: NoteType) => Promise<any>;
+  deleteNote: (id: string) => Promise<any>;
 };
 
 const NotesContext = createContext<NotesContextType>({
@@ -30,8 +26,8 @@ const NotesContext = createContext<NotesContextType>({
   notes: [],
   setNotes: () => {},
   getNotes: async (noteId?: string) => Promise<{}>,
-  saveNote: async (data: { id?: string; title: string; content: string,pinned?:boolean }) =>
-    Promise<{}>,
+  saveNote: async (data: NoteType) => Promise<{}>,
+  deleteNote: async (id: string) => Promise<{}>,
 });
 
 export const useNotesContext = () => {
@@ -48,21 +44,31 @@ export const NotesContextProvider = ({ children }: any) => {
 
   const saveNote = async (data: NoteType) => {
     const id = data._id;
-    const res = await ApiClient[id ? "patch" : "post"]("/notes", data);
-    if (res.data) {
+    if (id) {
       setNotes((prev) => {
-        if (id) {
-          const fIndex = prev.findIndex((item) => item._id == id);
-          // console.log(fIndex)
-          if (fIndex != -1) {
-            console.log(res.data)
-            prev[fIndex] = res.data;
-          }
-          return [...prev];
+        const fIndex = prev.findIndex((item) => item._id == id);
+        if (fIndex != -1) {
+          prev[fIndex] = data;
+          console.log(data);
         }
+        return [...prev];
+      });
+    }
+    const res = await ApiClient[id ? "patch" : "post"]("/notes", data);
+    if (!id && res.data) {
+      setNotes((prev) => {
         return [res.data, ...prev];
       });
     }
+    return res;
+  };
+
+  const deleteNote = async (id: string) => {
+    if (!id) return;
+    setNotes((prev) => {
+      return prev.filter((item) => item._id !== id);
+    });
+    const res = await ApiClient.delete(`/notes`, { _id: id });
     return res;
   };
 
@@ -86,6 +92,7 @@ export const NotesContextProvider = ({ children }: any) => {
     setNotes,
     getNotes,
     saveNote,
+    deleteNote,
   };
   return (
     <NotesContext.Provider value={value}>{children}</NotesContext.Provider>

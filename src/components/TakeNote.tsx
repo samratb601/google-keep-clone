@@ -25,7 +25,7 @@ export interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 const TakeNote = React.forwardRef<HTMLDivElement, Props>(
   ({ note: _note, handleCancel, className, ...props }, ref) => {
-    const isUpdate = !!_note;
+    const isUpdate = !!_note?._id;
 
     const noteRef = useRef<any>();
 
@@ -37,8 +37,9 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
 
     useOutsideClick(ref as RefObject<HTMLDivElement>, () => {
       if (content || title) {
-        const note = { title, content };
-        saveNote(isUpdate ? { ...note, id: _note._id } : note);
+        const newNote = { title, content };
+        const updatedNote = { ..._note, ...newNote };
+        saveNote(isUpdate ? updatedNote : newNote);
       }
 
       handleNoteChange("");
@@ -47,7 +48,8 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
     });
 
     useEffect(() => {
-      if (content) {
+      if (!content && open) noteRef.current?.focus();
+      else if (content) {
         const selection = window.getSelection();
         const range = document.createRange();
         range.selectNodeContents(noteRef.current);
@@ -56,30 +58,22 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
           selection.removeAllRanges();
           selection.addRange(range);
         }
-      } else if (!content && open) noteRef.current?.focus();
+      }
     }, [content, open]);
 
-    const handleTitleChange = useCallback(
-      debounce((value: string) => {
-        setTitle(value);
-      }, 300),
-      []
-    );
+    const handleTitleChange = (value: string) => {
+      setTitle(value);
+    };
 
-    const handleNoteChange = useCallback(
-      debounce((value: string) => {
-        setContent(value);
-      }, 300),
-      []
-    );
+    const handleNoteChange = (value: string) => {
+      setContent((prev) => value);
+    };
 
     const handleKeyUp = (e: KeyboardEvent<HTMLDivElement>) => {
       const target = e.target as HTMLDivElement;
       console.log(e.key, target.innerHTML);
       handleNoteChange(target.innerHTML);
     };
-
-   
 
     return (
       <div
@@ -101,32 +95,28 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
             />
           )}
 
-          {content ? (
-            <div
-              className="w-full min-h-[45px] rounded-md pl-4 py-2.5 bg-transparent border-none placeholder:text-slate-300 focus:outline-none focus:border-none focus:ring-0
-            focus-visible:ring-0 focus-visible:ring-offset-0 text-[0.9rem] text-slate-300"
-              ref={noteRef}
-              contentEditable
-              onKeyUp={handleKeyUp}
-              onInput={(e) => {
-                const target = e.target as HTMLDivElement;
-                const value = target.innerText;
-                handleNoteChange(value);
-              }}
-              dangerouslySetInnerHTML={{ __html: content }}
-            ></div>
-          ) : (
-            <input
-              className="w-full h-[45px] rounded-md pl-4 bg-transparent border-none placeholder:text-slate-300 focus:outline-none focus:border-none focus:ring-0
-        focus-visible:ring-0 focus-visible:ring-offset-0 text-[0.9rem] text-slate-300"
-              ref={noteRef}
-              placeholder="Take a note..."
-              onClick={() => {
-                setOpen(true);
-              }}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          )}
+          <div
+            className="w-full min-h-[45px] max-h-[50vh] overflow-y-auto rounded-md pl-4 py-2.5 bg-transparent border-none placeholder:text-slate-300 focus:outline-none focus:border-none focus:ring-0
+            focus-visible:ring-0 focus-visible:ring-offset-0 text-[0.9rem] text-slate-300 resize-none"
+            ref={noteRef}
+            role="textbox"
+            aria-multiline="true"
+            data-text="Take a note..."
+            contentEditable
+            onKeyUp={handleKeyUp}
+            onInput={(e) => {
+              const target = e.target as HTMLDivElement;
+              const value = target.innerHTML;
+              console.log(value);
+              handleNoteChange(value);
+            }}
+            dangerouslySetInnerHTML={{
+              __html: content ? content : "",
+            }}
+            onClick={() => {
+              setOpen(true);
+            }}
+          ></div>
 
           {open ? (
             <div className="flex absolute right-1.5 top-1.5">
@@ -151,15 +141,16 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
           {open && (
             <div className="relative bottom-0">
               <NoteTools
+                note={_note}
                 handleClickCancel={() => {
                   if (content || title) {
                     const note = { title, content };
-                    saveNote(isUpdate ? { ...note, id: _note._id } : note);
+                    saveNote(isUpdate ? { ...note, _id: _note._id } : note);
                   }
                   setOpen(false);
                   setTitle("");
                   setContent("");
-                  handleCancel?.()
+                  handleCancel?.();
                 }}
               />
             </div>

@@ -31,22 +31,20 @@ const Note = ({ i, note }: NoteProps) => {
 
   const handlePin = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
-    // setNotes((prev) => {
-    //   const itm = prev.find((item) => item._id == _id);
-    //   if (itm?.pinned) itm.pinned = !note?.pinned;
-    //   return [...prev];
-    // });
+    console.log({ ...note, pinned: !note?.pinned })
     saveNote({ ...note, pinned: !note?.pinned });
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: pinned ? 0 : 0 }}
+      key={`note-item-${note._id}`}
+      initial={{ opacity: 0 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: pinned ? 0.5 : 0.5 }}
+      exit={{ opacity: 0 }}
+      transition={{}}
       ref={noteRef}
       className={cn(
-        "relative border border-zinc-600 rounded-md shadow-md p-3 text-slate-300 cursor-default group transition-all delay-300 duration-150",
+        "relative border border-zinc-600 rounded-md shadow-md p-3 text-slate-300 cursor-default group",
         ``
       )}
       onClick={() => {
@@ -56,7 +54,7 @@ const Note = ({ i, note }: NoteProps) => {
       <div className="note-title text-[1.15rem] font-semibold">{title}</div>
       <div
         className={cn(
-          "note-content",
+          "note-content max-h-[30vh] truncate",
           `${title ? "mt-3" : "mt-1"} 
           ${contentLength >= 40 ? "text-[14px]" : "text-[1.1rem]"}`
         )}
@@ -87,6 +85,7 @@ const Note = ({ i, note }: NoteProps) => {
 
       <div className="relative -bottom-3 h-[40px] flex items-center">
         <NoteTools
+          note={note}
           showUndoRedo={false}
           className={
             active ? "visible" : "invisible group-hover:animate-tooltip_show"

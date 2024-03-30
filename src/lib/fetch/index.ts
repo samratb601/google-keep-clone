@@ -48,8 +48,8 @@ class FetchClient {
         return this.request(url, 'PATCH', data);
     }
 
-    public async delete(url: string): Promise<any> {
-        return this.request(url, 'DELETE');
+    public async delete(url: string, data: any): Promise<any> {
+        return this.request(url, 'DELETE', data);
     }
 }
 

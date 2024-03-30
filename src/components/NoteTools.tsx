@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { ReactNode } from "react";
+import { BiRedo, BiUndo } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { LuBell } from "react-icons/lu";
 import {
@@ -9,18 +10,26 @@ import {
 } from "react-icons/md";
 import { PiArchiveBox } from "react-icons/pi";
 import { IconWrapper } from "./IconWrapper";
-import { BiRedo, BiUndo } from "react-icons/bi";
 
 export interface Props extends React.HTMLAttributes<HTMLDivElement> {
+  note?: NoteType;
   showUndoRedo?: boolean;
   handleClickCancel?: () => void;
 }
 
 const NoteTools = React.forwardRef<HTMLDivElement, Props>(
   (
-    { children, className, showUndoRedo = true, handleClickCancel, ...props },
+    {
+      note,
+      children,
+      className,
+      showUndoRedo = true,
+      handleClickCancel,
+      ...props
+    },
     ref
   ) => {
+    const { deleteNote } = useNotesContext();
     return (
       <div
         ref={ref}
@@ -29,7 +38,7 @@ const NoteTools = React.forwardRef<HTMLDivElement, Props>(
           className
         )}
         {...props}
-        onClick={(e)=>e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className={`flex justify-between`}>
           <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
@@ -47,9 +56,18 @@ const NoteTools = React.forwardRef<HTMLDivElement, Props>(
           <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
             <PiArchiveBox size={18} />
           </IconWrapper>
-          <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
-            <BsThreeDotsVertical size={18} />
-          </IconWrapper>
+          <DropdownMenuThreeDot
+            menus={[
+              {
+                label: "Delete note",
+                onClick: () => note?._id && deleteNote(note._id),
+              },
+            ]}
+          >
+            <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
+              <BsThreeDotsVertical size={18} />
+            </IconWrapper>
+          </DropdownMenuThreeDot>
 
           {showUndoRedo && (
             <>
@@ -89,3 +107,40 @@ const NoteTools = React.forwardRef<HTMLDivElement, Props>(
 NoteTools.displayName = "NoteTools";
 
 export { NoteTools };
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useNotesContext } from "@/context/NotesContext";
+import { NoteType } from "@/types/note";
+
+export function DropdownMenuThreeDot({
+  children,
+  menus,
+}: {
+  children: ReactNode;
+  menus: {
+    label: string;
+    onClick?: () => void;
+  }[];
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56 bg-primary text-white border-primary shadow-dark">
+        {menus.map((item) => (
+          <DropdownMenuItem
+            className="focus:bg-stone-700/50 focus:text-white cursor-pointer"
+            key={`drp-dwn-item-${item.label}`}
+            onClick={item.onClick}
+          >
+            {item.label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
