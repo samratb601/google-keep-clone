@@ -1,6 +1,8 @@
 import { IconWrapper } from "@/components/IconWrapper";
 import { Input } from "@/components/ui/input";
+import { useNotesContext } from "@/context/NotesContext";
 import Image from "next/image";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoMdMenu, IoMdSearch } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -8,6 +10,8 @@ import { MdRefresh } from "react-icons/md";
 import { TbLayoutList } from "react-icons/tb";
 
 const Navbar = () => {
+  const { isSavingNotes } = useNotesContext();
+
   return (
     <nav className="select-none bg-primary fixed top-0 w-full h-[65px] flex justify-between py-2 px-3 z-[10] shadow-md">
       <div className="flex items-center gap-x-2">
@@ -45,9 +49,15 @@ const Navbar = () => {
         <IconWrapper className="text-gray-300 block md:hidden">
           <IoMdSearch size={22} />
         </IconWrapper>
+
         <IconWrapper className="text-gray-400">
-          <MdRefresh size={22} />
+          {isSavingNotes ? (
+            <AiOutlineLoading3Quarters size={20} className="animate-spin"/>
+          ) : (
+            <MdRefresh size={20} />
+          )}
         </IconWrapper>
+
         <IconWrapper className="text-gray-400">
           <TbLayoutList size={22} />
         </IconWrapper>

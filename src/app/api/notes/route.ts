@@ -25,16 +25,17 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     console.log("req recieved");
     const _req = await req.json();
     console.log("body---->", _req);
-    const { title, content, pinned } = _req as NoteType;
+    const { title, content, pinned, bgColor } = _req as NoteType;
 
     try {
         await connectDB();
         const doc = new Note({
             title: title || "",
             content: content || "",
-            pinned: false,
+            pinned: pinned || false,
+            bgColor: bgColor || "",
             user_id: "1",
-        });
+        } as NoteType);
         const res = await doc.save();
         console.log("doc created===>", res);
         return NextResponse.json({
@@ -55,15 +56,16 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
     console.log("req recieved");
     const _req = await req.json();
     console.log("patch body---->", _req);
-    const { _id, title, content, pinned } = _req as NoteType;
+    const { _id, title, content, pinned,bgColor } = _req as NoteType;
     console.log("--------------->", _req);
     try {
         await connectDB();
         const res = await Note.findOne({ _id }).updateOne({
             title,
             content,
+            bgColor:bgColor||"",
             pinned: pinned,
-        });
+        } as NoteType);
         console.log("====>", res);
         // const res = await doc.save();
         const updatedRes = await Note.findOne({ _id });

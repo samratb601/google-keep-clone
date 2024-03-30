@@ -43,6 +43,7 @@ export const NotesContextProvider = ({ children }: any) => {
   };
 
   const saveNote = async (data: NoteType) => {
+    setIsSavingNotes(true);
     const id = data._id;
     if (id) {
       setNotes((prev) => {
@@ -60,6 +61,10 @@ export const NotesContextProvider = ({ children }: any) => {
         return [res.data, ...prev];
       });
     }
+    setTimeout(() => {
+      setIsSavingNotes(false);
+    }, 1000 * 1);
+
     return res;
   };
 

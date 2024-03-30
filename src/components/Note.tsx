@@ -31,7 +31,7 @@ const Note = ({ i, note }: NoteProps) => {
 
   const handlePin = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
-    console.log({ ...note, pinned: !note?.pinned })
+    console.log({ ...note, pinned: !note?.pinned });
     saveNote({ ...note, pinned: !note?.pinned });
   };
 
@@ -39,13 +39,18 @@ const Note = ({ i, note }: NoteProps) => {
     <motion.div
       key={`note-item-${note._id}`}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        backgroundColor: note.bgColor,
+        borderColor: note.bgColor,
+      }}
       exit={{ opacity: 0 }}
       transition={{}}
       ref={noteRef}
       className={cn(
         "relative border border-zinc-600 rounded-md shadow-md p-3 text-slate-300 cursor-default group",
-        ``
+        // `${note.bgColor ? `bg-[${note.bgColor}]` : ""}`
       )}
       onClick={() => {
         setActive(!active);
