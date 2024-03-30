@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import Sidebar from "./Sidebar";
+import Sidebar from "../components/Sidebar";
 import TakeNote from "../components/TakeNote";
 import Note from "@/components/Note";
 import { useNotesContext } from "@/context/NotesContext";
@@ -36,7 +36,7 @@ export default function Home() {
 
               <AnimatePresence>
                 <ResponsiveMasonry
-                  className="w-full px-16 mt-8 pb-32"
+                  className="w-full px-1 sm:px-8 md:px-16 mt-8 pb-32"
                   columnsCountBreakPoints={{
                     500: 1,
                     550: 2,
@@ -47,7 +47,7 @@ export default function Home() {
                     1800: 7,
                   }}
                 >
-                  <div className="w-full text-left text-white text-[0.7rem] tracking-widest pb-2">
+                  <div className="w-full text-left text-white/70 text-[0.7rem] tracking-widest pb-2">
                     {pinnedNotes.length > 0 ? "PINNED" : ""}
                   </div>
                   <Masonry gutter="10px" className="">
@@ -62,7 +62,7 @@ export default function Home() {
                     })}
                   </Masonry>
 
-                  <div className="w-full text-left text-white text-[0.7rem] tracking-widest mt-10 pb-2">
+                  <div className="w-full text-left text-white/70 text-[0.7rem] tracking-widest mt-10 pb-2">
                     {pinnedNotes.length > 0 && otherNotes.length > 0
                       ? "OTHERS"
                       : ""}
