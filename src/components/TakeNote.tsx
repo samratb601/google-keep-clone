@@ -144,8 +144,9 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
                 note={_note}
                 handleClickCancel={() => {
                   if (content || title) {
-                    const note = { title, content };
-                    saveNote(isUpdate ? { ...note, _id: _note._id } : note);
+                    const newNote = { title, content };
+                    const updatedNote = { ..._note, ...newNote };
+                    saveNote(isUpdate ? updatedNote : newNote);
                   }
                   setOpen(false);
                   setTitle("");
