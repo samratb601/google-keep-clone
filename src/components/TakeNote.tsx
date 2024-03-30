@@ -83,6 +83,10 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
           `${open ? "" : ""} ${className}`
         )}
         {...props}
+        style={{
+          backgroundColor: _note?.bgColor,
+          borderColor: _note?.bgColor,
+        }}
       >
         <>
           {open && (
