@@ -19,6 +19,6 @@ A web application inspired by Google Keep, built with modern web technologies. T
 
 ## Installation
 
-git clone https://github.com/samratb601/google-keep-clone.git
-cd google-keep-clone 
-`npm install` then `npm run dev`
+1. git clone https://github.com/samratb601/google-keep-clone.git
+2. `cd google-keep-clone` 
+3. `npm install` then `npm run dev`
