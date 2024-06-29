@@ -16,6 +16,7 @@ A web application inspired by Google Keep, built with modern web technologies. T
 - **Backend:** [Next.js](https://nextjs.org/) v14 - Used in conjunction with its API routes to handle server-side logic and build server-rendered applications.
 - **Database:** [MongoDB](https://www.mongodb.com/) - A NoSQL database for storing notes and lists.
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for styling the application.
+- **UI Components:** [ShadCN UI](https://ui.shadcn.com/) - A collection of UI components built with Tailwind CSS.
 
 ## Installation
 
