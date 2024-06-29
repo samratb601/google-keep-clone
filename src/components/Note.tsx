@@ -21,13 +21,9 @@ const Note = ({ i, note }: NoteProps) => {
   const noteRef = useRef<any>();
   const takeNoteRef = useRef<any>();
 
-  const { saveNote, setNotes } = useNotesContext();
+  const { saveNote } = useNotesContext();
 
   const [active, setActive] = useState(false);
-
-  useOutsideClick(takeNoteRef as RefObject<HTMLDivElement>, () => {
-    setActive(false);
-  });
 
   const handlePin = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
@@ -49,7 +45,7 @@ const Note = ({ i, note }: NoteProps) => {
       transition={{}}
       ref={noteRef}
       className={cn(
-        "relative border border-zinc-600 rounded-md shadow-md p-3 text-slate-300 cursor-default group",
+        "relative border border-zinc-600 rounded-md shadow-md p-3 text-slate-300 cursor-default group"
         // `${note.bgColor ? `bg-[${note.bgColor}]` : ""}`
       )}
       onClick={() => {
@@ -83,7 +79,7 @@ const Note = ({ i, note }: NoteProps) => {
           } `
         )}
       >
-        <IconWrapper className="p-2 text-slate-300" onClick={handlePin}>
+        <IconWrapper className="p-2 text-slate-300 hover:bg-white/5" onClick={handlePin}>
           {pinned ? <BsPinFill size={20} /> : <BsPin size={20} />}
         </IconWrapper>
       </div>
@@ -92,6 +88,10 @@ const Note = ({ i, note }: NoteProps) => {
         <NoteTools
           note={note}
           showUndoRedo={false}
+          handleThemeChange={(color: string = "") => {
+            if (!note) return;
+            saveNote({ ...note, bgColor: color });
+          }}
           className={
             active ? "visible" : "invisible group-hover:animate-tooltip_show"
           }
@@ -121,21 +121,21 @@ export default Note;
 const motionVariants: Variants = {
   hidden: {
     opacity: 0,
-    scale: 0.8,
+    // scale: 0.8,
     position: "absolute",
-    x: 0,
-    y: 0,
-    transition: {
-      duration: 0.2,
-    },
+    // x: 0,
+    // y: 0,
+    // transition: {
+    //   duration: 0.2,
+    // },
   },
   animate: {
     opacity: 1,
-    scale: 1,
+    // scale: 1,
     position: "fixed",
-    transition: {
-      duration: 0.2,
-    },
+    // transition: {
+    //   duration: 0.2,
+    // },
   },
 };
 

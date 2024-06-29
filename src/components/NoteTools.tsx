@@ -17,6 +17,7 @@ export interface Props extends React.HTMLAttributes<HTMLDivElement> {
   note?: NoteType;
   showUndoRedo?: boolean;
   handleClickCancel?: () => void;
+  handleThemeChange: (color: string) => void;
 }
 
 const NoteTools = React.forwardRef<HTMLDivElement, Props>(
@@ -27,6 +28,7 @@ const NoteTools = React.forwardRef<HTMLDivElement, Props>(
       className,
       showUndoRedo = true,
       handleClickCancel,
+      handleThemeChange,
       ...props
     },
     ref
@@ -34,45 +36,40 @@ const NoteTools = React.forwardRef<HTMLDivElement, Props>(
     const { deleteNote, saveNote } = useNotesContext();
 
     const bgColors = [
-      { name: "Coral", code: "#CC3311" }, // Dark Coral
-      { name: "Peach", code: "#FF7755" }, // Dark Peach
-      { name: "Sand", code: "#8C3A00" }, // Dark Sand
-      { name: "Mint", code: "#4B8C32" }, // Dark Mint
-      { name: "Sage", code: "#2E6F39" }, // Dark Sage
-      { name: "Fogg", code: "#555555" }, // Dark Fogg
-      { name: "Strom", code: "#1C2B3C" }, // Dark Strom
-      { name: "Dusk", code: "#000000" }, // Black (Dusk)
-      { name: "Blossom", code: "#FF5566" }, // Dark Blossom
-      { name: "Clay", code: "#663300" }, // Dark Clay
+      { name: "Coral", code: "#77172e" }, // Dark Coral
+      { name: "Peach", code: "#692b17" }, // Dark Peach
+      { name: "Sand", code: "#7c4a03" }, // Dark Sand
+      { name: "Mint", code: "#264d3b" }, // Dark Mint
+      { name: "Sage", code: "#0c625d" }, // Dark Sage
+      { name: "Fogg", code: "#256377" }, // Dark Fogg
+      { name: "Strom", code: "#284255" }, // Dark Strom
+      { name: "Dusk", code: "#472e5b" }, // Black (Dusk)
+      { name: "Blossom", code: "#6c394f" }, // Dark Blossom
+      { name: "Clay", code: "#4b443a" }, // Dark Clay
+      { name: "Chalk", code: "#232427" }, // Dark Chalk
     ];
-
-    const handleColorChange = (color: string = "") => {
-      if (!note) return;
-      // alert(color)
-      saveNote({ ...note, bgColor: color });
-    };
 
     return (
       <div
         ref={ref}
         className={cn(
-          ` w-full px-2 py-1 flex justify-between text-inherit`,
+          ` w-full py-1 flex justify-start text-inherit`,
           className
         )}
         {...props}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={`flex justify-between`}>
-          <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
+          <IconWrapper className="p-2 text-inherit">
             <LuBell size={18} />
           </IconWrapper>
-          <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
+          <IconWrapper className="p-2 text-inherit">
             <MdPersonAddAlt size={18} />
           </IconWrapper>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
+              <IconWrapper className="p-2 text-inherit">
                 <MdOutlineColorLens size={18} />
               </IconWrapper>
             </DropdownMenuTrigger>
@@ -87,7 +84,7 @@ const NoteTools = React.forwardRef<HTMLDivElement, Props>(
                       : ""
                   }`
                 )}
-                onClick={() => handleColorChange()}
+                onClick={() => handleThemeChange("")}
               >
                 <MdOutlineInvertColorsOff size={20} />
                 {!note?.bgColor && (
@@ -109,7 +106,10 @@ const NoteTools = React.forwardRef<HTMLDivElement, Props>(
                         : ""
                     }`
                   )}
-                  onClick={() => handleColorChange(item.code)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleThemeChange(item.code);
+                  }}
                 >
                   {item.code == note?.bgColor && (
                     <IoIosCheckmarkCircle
@@ -122,10 +122,10 @@ const NoteTools = React.forwardRef<HTMLDivElement, Props>(
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
+          <IconWrapper className="p-2 text-inherit">
             <MdOutlineImage size={18} />
           </IconWrapper>
-          <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
+          <IconWrapper className="p-2 text-inherit">
             <PiArchiveBox size={18} />
           </IconWrapper>
           <DropdownMenuThreeDot
@@ -136,7 +136,7 @@ const NoteTools = React.forwardRef<HTMLDivElement, Props>(
               },
             ]}
           >
-            <IconWrapper className="p-2 text-inherit hover:bg-zinc-700/40">
+            <IconWrapper className="p-2 text-inherit">
               <BsThreeDotsVertical size={18} />
             </IconWrapper>
           </DropdownMenuThreeDot>

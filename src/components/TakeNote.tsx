@@ -34,10 +34,12 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
     const [open, setOpen] = useState(isUpdate);
     const [title, setTitle] = useState(_note?.title || "");
     const [content, setContent] = useState(_note?.content || "");
+    const [bgColor, setBgColor] = useState("");
 
     useOutsideClick(ref as RefObject<HTMLDivElement>, () => {
+      console.log("clicked outside");
       if (content || title) {
-        const newNote = { title, content };
+        const newNote = { title, content, bgColor: bgColor || _note?.bgColor };
         const updatedNote = { ..._note, ...newNote };
         saveNote(isUpdate ? updatedNote : newNote);
       }
@@ -45,11 +47,11 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
       handleNoteChange("");
       setTitle("");
       setOpen(false);
+      handleCancel?.();
     });
 
     useEffect(() => {
-      if (!content && open) noteRef.current?.focus();
-      else if (content) {
+      if (content) {
         const selection = window.getSelection();
         const range = document.createRange();
         range.selectNodeContents(noteRef.current);
@@ -66,7 +68,7 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
     };
 
     const handleNoteChange = (value: string) => {
-      setContent((prev) => value);
+      setContent(value);
     };
 
     const handleKeyUp = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -84,8 +86,8 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
         )}
         {...props}
         style={{
-          backgroundColor: _note?.bgColor,
-          borderColor: _note?.bgColor,
+          backgroundColor: _note?.bgColor || bgColor || "",
+          borderColor: _note?.bgColor || bgColor || "",
         }}
       >
         <>
@@ -143,9 +145,23 @@ const TakeNote = React.forwardRef<HTMLDivElement, Props>(
           )}
 
           {open && (
-            <div className="relative bottom-0">
+            <div
+              className="relative bottom-0"
+              onClick={(e) => e.preventDefault()}
+              ref={ref}
+            >
               <NoteTools
                 note={_note}
+                className="flex justify-between px-2"
+                handleThemeChange={(color: string = "") => {
+                  alert(color);
+                  if (!_note) {
+                    setBgColor(color);
+                    return;
+                  }
+                  // alert(color)
+                  saveNote({ ..._note, bgColor: color });
+                }}
                 handleClickCancel={() => {
                   if (content || title) {
                     const newNote = { title, content };

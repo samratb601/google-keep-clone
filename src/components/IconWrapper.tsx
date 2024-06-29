@@ -11,7 +11,7 @@ const IconWrapper = React.forwardRef<HTMLDivElement, Props>(
       <div
         ref={ref}
         className={cn(
-          "text-white hover:bg-zinc-800 p-3 rounded-full cursor-pointer",
+          "text-white hover:bg-white/5 p-3 rounded-full cursor-pointer",
           className
         )}
         {...props}
